@@ -20,7 +20,11 @@ return {
 		dap.listeners.before.event_exited.dapui_config = function()
 			dapui.close()
 		end
-		
+
+    -- Python
+    --
+    --local python_dap = require()
+		-- C
 		local home_path = "C:\\Users\\JKorbel"
 		local vscode_path = home_path .. "\\scoop\\apps\\vscode"
 		local lldb_ext_path = vscode_path .. "\\current\\data\\extensions\\vadimcn.vscode-lldb-1.11.2"
@@ -62,5 +66,17 @@ return {
 				runInTerminal=true,
 			},
 		}
+
+    require("dap-python").setup("python")
+    dap.configurations.python = {
+      {
+        name = 'Jedi - Python',
+        type = "debugpy",
+        request = 'launch',
+        name = 'My custom launch configuration',
+        program = 'C:\\Users\\JKorbel\\gitlab\\jedi\\src\\jedi.py --eds-file C:\\Users\\JKorbel\\prj\\edlt\\win\\EDS.eds',
+      },
+    }
 	end,
+
 }
