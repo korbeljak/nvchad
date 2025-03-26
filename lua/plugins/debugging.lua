@@ -1,9 +1,16 @@
 return {
 	"mfussenegger/nvim-dap",
+  dependencies = {
+	  "nvim-neotest/nvim-nio",
+    "rcarriga/nvim-dap-ui",
+    "mfussenegger/nvim-dap-python",
+  },
 	config = function()
 		local dap = require("dap")
+    local dappy = require("dap-python")
 		local dapui = require("dapui")
 		
+    dappy.setup()
 		dapui.setup()
 		dap.listeners.before.attach.dapui_config = function()
 			dapui.open()
@@ -45,14 +52,6 @@ return {
 			
 			name = "codelldb",
 		}
-		
-		dap.configurations.rust = {
-			codelldb -- different debuggers or more configurations can be used here
-		}
-		
-		dap.configurations.cpp = {
-			codelldb -- different debuggers or more configurations can be used here
-		}
 
 		dap.configurations.c = {
 			{
@@ -68,15 +67,25 @@ return {
 		}
 
     require("dap-python").setup("python")
-    dap.configurations.python = {
-      {
-        name = 'Jedi - Python',
-        type = "debugpy",
-        request = 'launch',
-        name = 'My custom launch configuration',
-        program = 'C:\\Users\\JKorbel\\gitlab\\jedi\\src\\jedi.py --eds-file C:\\Users\\JKorbel\\prj\\edlt\\win\\EDS.eds',
-      },
-    }
+    table.insert(require('dap').configurations.python, {
+      type = 'python',
+      request = 'launch',
+      name = 'Jedi',
+      program = '${file}',
+      args = {"--eds-path", "C:\\Users\\JKorbel\\Downloads\\EDS.eds"},
+      cwd = "C:\\Users\\JKorbel\\Downloads",
+  -- ... more options, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings
+})
+    -- dap.configurations.python = {
+    --   {
+    --     name = 'Jedi - Python',
+    --     type = "python",
+    --     request = 'launch',
+    --     program = 'C:\\Users\\JKorbel\\gitlab\\jedi\\src\\jedi.py',
+    --     args = {"--eds-file", "C:\\Users\\JKorbel\\Downloads\\EDS.eds"},
+    --     cwd = "C:\\Users\\JKorbel\\prj\\edlt\\win",
+    --   },
+    -- }
 	end,
 
 }
