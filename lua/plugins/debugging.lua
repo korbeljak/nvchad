@@ -1,9 +1,16 @@
 return {
 	"mfussenegger/nvim-dap",
+  dependencies = {
+	  "nvim-neotest/nvim-nio",
+    "rcarriga/nvim-dap-ui",
+    "mfussenegger/nvim-dap-python",
+  },
 	config = function()
 		local dap = require("dap")
+    local dappy = require("dap-python")
 		local dapui = require("dapui")
 		
+    dappy.setup()
 		dapui.setup()
 		dap.listeners.before.attach.dapui_config = function()
 			dapui.open()
@@ -20,7 +27,11 @@ return {
 		dap.listeners.before.event_exited.dapui_config = function()
 			dapui.close()
 		end
-		
+
+    -- Python
+    --
+    --local python_dap = require()
+		-- C
 		local home_path = "C:\\Users\\JKorbel"
 		local vscode_path = home_path .. "\\scoop\\apps\\vscode"
 		local lldb_ext_path = vscode_path .. "\\current\\data\\extensions\\vadimcn.vscode-lldb-1.11.2"
@@ -41,14 +52,6 @@ return {
 			
 			name = "codelldb",
 		}
-		
-		dap.configurations.rust = {
-			codelldb -- different debuggers or more configurations can be used here
-		}
-		
-		dap.configurations.cpp = {
-			codelldb -- different debuggers or more configurations can be used here
-		}
 
 		dap.configurations.c = {
 			{
@@ -62,5 +65,27 @@ return {
 				runInTerminal=true,
 			},
 		}
+
+    require("dap-python").setup("python")
+    table.insert(require('dap').configurations.python, {
+      type = 'python',
+      request = 'launch',
+      name = 'Jedi',
+      program = '${file}',
+      args = {"--eds-path", "C:\\Users\\JKorbel\\Downloads\\EDS.eds"},
+      cwd = "C:\\Users\\JKorbel\\Downloads",
+  -- ... more options, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings
+})
+    -- dap.configurations.python = {
+    --   {
+    --     name = 'Jedi - Python',
+    --     type = "python",
+    --     request = 'launch',
+    --     program = 'C:\\Users\\JKorbel\\gitlab\\jedi\\src\\jedi.py',
+    --     args = {"--eds-file", "C:\\Users\\JKorbel\\Downloads\\EDS.eds"},
+    --     cwd = "C:\\Users\\JKorbel\\prj\\edlt\\win",
+    --   },
+    -- }
 	end,
+
 }
