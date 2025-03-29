@@ -20,7 +20,7 @@ end
 
 if _G.IS_LINUX then
   vim.opt.shell = "fish"
-elif _G.IS_MAC then
+elseif _G.IS_MAC then
   vim.opt.shell = "fish"
 else
   vim.opt.shell = vim.fn.executable "pwsh" and "pwsh" or "powershell"
