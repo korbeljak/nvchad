@@ -9,7 +9,6 @@ return {
 		local dap = require("dap")
     local dappy = require("dap-python")
 		local dapui = require("dapui")
-		
     dappy.setup()
 		dapui.setup()
 		dap.listeners.before.attach.dapui_config = function()
@@ -18,14 +17,15 @@ return {
 
 		dap.listeners.before.launch.dapui_config = function()
 			dapui.open()
+		  dap.set_exception_breakpoints({"uncaught"})
 		end
 
 		dap.listeners.before.event_terminated.dapui_config = function()
-			dapui.close()
+			--dapui.close()
 		end
 		
 		dap.listeners.before.event_exited.dapui_config = function()
-			dapui.close()
+			--dapui.close()
 		end
 
     -- Python
@@ -66,7 +66,7 @@ return {
 			},
 		}
 
-    require("dap-python").setup("python")
+    dappy.setup("python")
     table.insert(require('dap').configurations.python, {
       type = 'python',
       request = 'launch',

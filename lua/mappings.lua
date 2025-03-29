@@ -13,5 +13,6 @@ map("n", '<leader>db', function() require('dap').toggle_breakpoint() end, {desc=
 map("n", '<leader>dn', function() require('dap').step_over() end, {desc="Debug - Next"})
 map("n", '<leader>ds', function() require('dap').step_into() end, {desc="Debug - Step Into"})
 map("n", '<leader>do', function() require('dap').step_out() end, {desc="Debug - Step Out"})
+map("n", '<leader>dq', function() require('dapui').close() end, {desc="Close dap-ui"})
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
